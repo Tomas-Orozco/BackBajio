@@ -8,6 +8,7 @@ import asesoresRoutes from './routes/asesores.js';
 import comprobantesRoutes from './routes/comprobante.js';
 import alertasRoutes from './routes/alerta.js';
 import trimestresRoutes from './routes/trimestre.js';
+import authRoutes from './routes/inicio.js';
 
 dotenv.config();
 
@@ -32,8 +33,10 @@ app.use('/asesores', asesoresRoutes);
 app.use('/comprobantes', comprobantesRoutes);
 app.use('/alertas', alertasRoutes);
 app.use('/trimestres', trimestresRoutes);
+app.use('/inicio', authRoutes);
 
-// Puerto del servidor
+
+
 const PORT = process.env.PORT || 4000;
 
 app.listen(PORT, () => {
