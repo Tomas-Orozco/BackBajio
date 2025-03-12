@@ -4,14 +4,25 @@ import { obtenerComprobantes, crearComprobante } from '../controllers/comprobant
 import multer, { diskStorage } from 'multer';
 
 const storage = diskStorage({
-  destination: 'uploads/',
+  destination: 'uploads/', // Carpeta donde se guardarán los archivos
   filename: (req, file, cb) => cb(null, Date.now() + '-' + file.originalname)
 });
-const upload = multer({ storage });
 
+const upload = multer({
+  storage,
+  limits: { fileSize: 5 * 1024 * 1024 }, // Límite de 5MB por archivo
+});
 
-router.get('/:usuarioId/:trimestreId', obtenerComprobantes);
+router.get('/:usuarioId', obtenerComprobantes);
 
-router.post('/crearComprobante', upload.array('documentos', 2), crearComprobante);
+// Aquí corregimos el middleware para que espere los archivos correctos
+router.post(
+  '/crearComprobante',
+  upload.fields([
+    { name: "documento_pdf", maxCount: 1 },
+    { name: "documento_xml", maxCount: 1 }
+  ]),
+  crearComprobante
+);
 
 export default router;
